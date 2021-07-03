@@ -1,0 +1,91 @@
+spring:
+  application:
+    name: dynamic-datasource-core
+    #Redis的配置
+  redis:
+    host: 127.0.0.1 # Redis服务器地址
+    database: 3 # Redis数据库索引（默认为0）
+    port: 16379 # Redis服务器连接端口
+    password: SbtyMveYNfLzTks7H0apCmyStPzWJqjy # Redis服务器连接密码（默认为空）
+    jedis:
+      pool:
+        max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 8 # 连接池中的最大空闲连接
+        min-idle: 0 # 连接池中的最小空闲连接
+      timeout: 3000ms # 连接超时时间（毫秒）
+
+  datasource:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+#      url: jdbc:mysql://127.0.0.1:3306/jsh_erp?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
+      url: jdbc:mysql://127.0.0.1:3306/lamp_defaults?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
+      username: root
+      password: root
+      # 连接池
+      hikari:
+        #连接池名
+        pool-name: DateHikariCP
+        #最小空闲连接数
+        minimum-idle: 5
+        # 空闲连接存活最大时间，默认600000（10分钟）
+        idle-timeout: 180000
+        # 连接池最大连接数，默认是10
+        maximum-pool-size: 10
+        # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+        auto-commit: true
+        # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+        max-lifetime: 1800000
+        # 数据库连接超时时间,默认30秒，即30000
+        connection-timeout: 30000
+        connection-test-query: SELECT 1
+
+
+
+# 服务端口
+server:
+  port: 9990
+  servlet:
+    context-path: /jshERP-boot
+    session:
+      timeout: 36000
+
+#租户对应的角色id
+manage:
+  roleId: 10
+  #租户允许创建的用户数
+tenant:
+  userNumLimit: 1000000
+  #租户允许创建的单据数
+  billsNumLimit: 100000000
+  #演示模式开关-默认关闭:false
+demonstrate:
+  open: false
+  #插件配置
+plugin:
+  runMode: prod
+  pluginPath: plugins
+  pluginConfigFilePath: pluginConfig
+
+
+#mybatis-plus配置控制台打印完整带参数SQL语句
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations : classpath:./mapper_xml/*.xml
+
+# 自定义redis key
+redis:
+  key:
+    prefix:
+      authCode: "dynamic-datasource:authCode:"
+    expire:
+      authCode: 120 # 验证码超期时间
+
+
+
+
+
+
+
+
